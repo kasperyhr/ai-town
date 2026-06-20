@@ -2,7 +2,7 @@
 
 这份文档面向不熟悉代码的工程师，说明如何在 Windows、macOS 本地运行，以及如何部署到 Cloudflare。你说过会等应用准备好后再部署，所以本文会持续更新，最后会成为可直接照着操作的版本。
 
-当前代码对应版本 `v0.6.0`：已包含 Cloudflare Worker、D1、GitHub/Google OAuth、用户隔离、多故事存档、加密 `.aitown` 导入导出、角色和词库编辑、DeepSeek 生成下一天、故事历史、一天 7 个 scene beat 的时间线、角色会随当前 beat 移动的小镇地图演示层，以及 React 前端架构。自动生成新角色和像素风地图升级会在后续版本补上。
+当前代码对应版本 `v0.7.0`：已包含 Cloudflare Worker、D1、GitHub/Google OAuth、用户隔离、多故事存档、加密 `.aitown` 导入导出、角色和词库编辑、DeepSeek 生成下一天、故事历史、一天 7 个 scene beat 的时间线、React 前端架构，以及像素风小镇地图和 sprite 风格角色展示。自动生成新角色会在后续版本补上。
 
 ## 1. 本地部署和 Cloudflare 部署的区别
 

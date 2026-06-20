@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.6.0';
+export const currentVersion = 'v0.7.0';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.7.0',
+    date: '2026-06-20',
+    title: {
+      en: 'Pixel town presentation',
+      zh: '像素小镇展示版',
+    },
+    changes: {
+      en: [
+        'Redesigned the town map as a 2D pixel-style scene with tile texture, roads, water, plaza, sun, clouds, and vignette lighting.',
+        'Replaced circular character markers with pixel sprite characters that include head, hair, body, legs, labels, shadows, and active walk animation.',
+        'Added pixel-style buildings for each town location and an active scene pulse for the current beat location.',
+      ],
+      zh: [
+        '将小镇地图重设计为 2D 像素风场景，加入 tile 纹理、道路、水面、广场、太阳、云和光影层次。',
+        '将圆形角色标记替换为像素 sprite 角色，包含头部、头发、身体、腿、名字标签、阴影和活动行走动画。',
+        '为每个地点加入像素建筑，并为当前 beat 地点加入活动脉冲效果。',
+      ],
+    },
+  },
   {
     version: 'v0.6.0',
     date: '2026-06-20',

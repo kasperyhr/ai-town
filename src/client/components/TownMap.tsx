@@ -11,27 +11,32 @@ type Props = {
   t: Translator;
 };
 
-export function TownMap({ language, world, characters, beat, t }: Props): ReactElement {
+export function TownMap({ language, world, characters, beat }: Props): ReactElement {
   const activePlace = getBeatPlace(beat);
   const period = (beat?.timeSlot ?? 'day').toLowerCase().replace(/\s+/g, '-');
 
   return (
     <div className="town-scene" data-period={period}>
+      <div className="pixel-sun" />
+      <div className="pixel-cloud cloud-one" />
+      <div className="pixel-cloud cloud-two" />
+      <div className="tile-field" />
       <div className="map-road main-road" />
       <div className="map-road cross-road" />
       <div className="map-water" />
       <div className="plaza" />
       {mapPlaces.map((place) => (
         <div
-          className={`map-place ${place.key === activePlace.key ? 'active' : ''}`}
+          className={`map-place place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
           style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
           key={place.key}
         >
-          <span />
+          <span className="place-building" />
           <strong>{placeLabel(place, language)}</strong>
         </div>
       ))}
       <TownCharacters world={world} characters={characters} beat={beat} activePlace={activePlace} />
+      <div className="pixel-vignette" />
     </div>
   );
 }
@@ -79,6 +84,7 @@ function TownCharacters({
   const activeNames = new Set(activeCharacterNames(beat).map(normalizeName));
   const hasMatchedActive = characters.some((character) => isCharacterActive(character.name, activeNames));
   const colors = ['#f66f5e', '#3d8bfd', '#28a96f', '#a26be8', '#d28b19', '#0f9f9a', '#cf5f98', '#697386'];
+  const hairColors = ['#23332a', '#5f4634', '#e3d3a0', '#26364f', '#6c352a', '#2d5141', '#432e63', '#3f4147'];
 
   return (
     <>
@@ -87,12 +93,28 @@ function TownCharacters({
         const position = characterPosition(index, rendered.length, active, activePlace, beat?.timeSlot ?? '');
         return (
           <div
-            className={`character ${active ? 'active' : ''}`}
-            style={{ '--x': `${position.x}%`, '--y': `${position.y}%`, '--color': colors[index % colors.length] } as CSSProperties}
+            className={`character pixel-character ${active ? 'active' : ''}`}
+            style={
+              {
+                '--x': `${position.x}%`,
+                '--y': `${position.y}%`,
+                '--color': colors[index % colors.length],
+                '--hair': hairColors[index % hairColors.length],
+              } as CSSProperties
+            }
             title={character.name}
             key={character.id}
           >
-            <span>{character.name.slice(0, 1) || String(index + 1)}</span>
+            <span className="sprite-shadow" />
+            <span className="sprite-head">
+              <span className="sprite-hair" />
+              <span className="sprite-eye eye-left" />
+              <span className="sprite-eye eye-right" />
+            </span>
+            <span className="sprite-body">
+              <span className="sprite-leg leg-left" />
+              <span className="sprite-leg leg-right" />
+            </span>
             <small>{character.name}</small>
           </div>
         );
