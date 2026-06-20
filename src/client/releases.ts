@@ -1,0 +1,173 @@
+import type { Language } from './types';
+
+export type ReleaseNote = {
+  version: string;
+  date: string;
+  title: Record<Language, string>;
+  changes: Record<Language, string[]>;
+};
+
+export const currentVersion = 'v0.6.0';
+
+export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.6.0',
+    date: '2026-06-20',
+    title: {
+      en: 'React front-end architecture',
+      zh: 'React 前端架构版',
+    },
+    changes: {
+      en: [
+        'Rebuilt the client as a React + Vite app while keeping the Cloudflare Worker API unchanged.',
+        'Split API calls, i18n, map logic, icons, sidebar, map, story history, and editors into focused modules.',
+        'Kept the Cloudflare deployment model unchanged: Vite still builds static assets into dist/client.',
+      ],
+      zh: [
+        '将前端重构为 React + Vite 应用，同时保持 Cloudflare Worker API 不变。',
+        '拆分 API、双语文案、地图逻辑、图标、侧栏、地图、故事历史和编辑器模块。',
+        '保持 Cloudflare 部署方式不变：Vite 仍然构建静态资源到 dist/client。',
+      ],
+    },
+  },
+  {
+    version: 'v0.5.3',
+    date: '2026-06-20',
+    title: {
+      en: 'Sidebar and map label polish',
+      zh: '侧栏与地图标签优化',
+    },
+    changes: {
+      en: [
+        'Moved account actions into the left sidebar and removed provider details from the top bar.',
+        'Pinned the sidebar to the left edge and cleaned up collapsed behavior.',
+        'Made town character names visible by default instead of only on hover.',
+      ],
+      zh: [
+        '将账户操作移入左侧侧栏，并从顶栏移除登录方式细节。',
+        '让侧栏贴合网页最左侧，并优化收起状态。',
+        '让地图上的角色名字默认显示，而不是只在 hover 时显示。',
+      ],
+    },
+  },
+  {
+    version: 'v0.5.0',
+    date: '2026-06-20',
+    title: {
+      en: 'Story history and beat-driven town map',
+      zh: '故事历史与 beat 驱动地图',
+    },
+    changes: {
+      en: [
+        'Added story history so users can revisit previous generated days.',
+        'Split each generated day into seven scene beats.',
+        'Added a map demo layer where characters move toward the active beat location.',
+      ],
+      zh: [
+        '加入故事历史，用户可以回看之前生成的日期。',
+        '将每天剧情拆分为七个 scene beat。',
+        '加入地图演示层，角色会移动到当前 beat 的地点。',
+      ],
+    },
+  },
+  {
+    version: 'v0.4.0',
+    date: '2026-06-20',
+    title: {
+      en: 'DeepSeek story generation',
+      zh: 'DeepSeek 剧情生成',
+    },
+    changes: {
+      en: [
+        'Added manual next-day generation with DeepSeek.',
+        'Hardened JSON parsing, retry, fallback story generation, and optional audit logs.',
+        'Disabled thinking mode for structured JSON generation to avoid empty final content.',
+      ],
+      zh: [
+        '加入手动生成下一天剧情。',
+        '增强 JSON 解析、重试、兜底剧情和可选审计日志。',
+        '为结构化 JSON 生成关闭 thinking mode，避免最终 content 为空。',
+      ],
+    },
+  },
+  {
+    version: 'v0.3.0',
+    date: '2026-06-20',
+    title: {
+      en: 'Character and lexicon editing',
+      zh: '角色与词库编辑',
+    },
+    changes: {
+      en: [
+        'Added character creation, editing, and deletion.',
+        'Added user-managed lexicon entries for story generation context.',
+        'Localized seeded character attributes without extra model calls.',
+      ],
+      zh: [
+        '加入角色创建、编辑和删除。',
+        '加入用户可维护的词库，用于剧情生成上下文。',
+        '对默认角色属性做本地双语显示，不额外调用模型。',
+      ],
+    },
+  },
+  {
+    version: 'v0.2.5',
+    date: '2026-06-20',
+    title: {
+      en: 'Multiple stories and encrypted transfer',
+      zh: '多故事与加密迁移',
+    },
+    changes: {
+      en: [
+        'Allowed each user to keep multiple independent story saves.',
+        'Added encrypted .aitown export and import.',
+        'Designed exports so another user can import a snapshot and continue from that moment.',
+      ],
+      zh: [
+        '允许每个用户拥有多个独立故事存档。',
+        '加入加密 .aitown 导出和导入。',
+        '支持其他用户导入某个时间点的故事快照并从那里继续。',
+      ],
+    },
+  },
+  {
+    version: 'v0.2.0',
+    date: '2026-06-20',
+    title: {
+      en: 'OAuth and user isolation',
+      zh: 'OAuth 与用户隔离',
+    },
+    changes: {
+      en: [
+        'Added GitHub and Google OAuth flows.',
+        'Separated user data by authenticated user and login provider.',
+        'Added session cookies and CSRF checks for state-changing requests.',
+      ],
+      zh: [
+        '加入 GitHub 和 Google OAuth 登录。',
+        '按认证用户和登录 provider 隔离数据。',
+        '为会话加入 Cookie，并为写操作加入 CSRF 校验。',
+      ],
+    },
+  },
+  {
+    version: 'v0.1.0',
+    date: '2026-06-20',
+    title: {
+      en: 'Cloudflare AI town foundation',
+      zh: 'Cloudflare AI 小镇基础版',
+    },
+    changes: {
+      en: [
+        'Created the Cloudflare Worker + D1 + Vite foundation.',
+        'Added the initial authenticated AI town shell.',
+        'Added Chinese and English UI language switching.',
+      ],
+      zh: [
+        '创建 Cloudflare Worker + D1 + Vite 基础架构。',
+        '加入初始的登录后 AI 小镇界面。',
+        '加入中英文界面切换。',
+      ],
+    },
+  },
+];

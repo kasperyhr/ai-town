@@ -1,0 +1,10 @@
+APP_ORIGIN=http://127.0.0.1:8787
+SESSION_SECRET=replace-with-a-long-random-string
+GITHUB_CLIENT_ID=replace-me
+GITHUB_CLIENT_SECRET=replace-me
+GOOGLE_CLIENT_ID=replace-me
+GOOGLE_CLIENT_SECRET=replace-me
+DEEPSEEK_API_KEY=replace-me
+DEEPSEEK_MODEL=deepseek-v4-flash
+DEEPSEEK_DEBUG_LOGS=false
+EXPORT_MASTER_KEYS_JSON={"main":"replace-with-a-32-byte-random-master-secret"}
