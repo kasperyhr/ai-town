@@ -2,7 +2,7 @@
 
 This guide is written for engineers who may not be familiar with code. It explains how to run the project locally on Windows and macOS, and how to deploy it on Cloudflare. You said you will deploy only after the app is ready, so this document will keep evolving into a final step-by-step manual.
 
-The current code is version `v0.7.2`: Cloudflare Worker, D1, GitHub/Google OAuth, user isolation, multiple story saves, encrypted `.aitown` import/export, character and lexicon editing, DeepSeek next-day generation, story history, a 7-beat daily timeline, a React front-end architecture, an overlay story sidebar, and a fixed-ratio draggable town map viewport. Automatic new character generation and a real asset-based pixel renderer are planned for later versions.
+The current code is version `v0.8.0`: Cloudflare Worker, D1, GitHub/Google OAuth, user isolation, multiple story saves, encrypted `.aitown` import/export, character and lexicon editing, DeepSeek next-day generation, story history, a 7-beat daily timeline, a React front-end architecture, an overlay story sidebar, and an asset-based AI Town-inspired pixel map renderer using local tileset and spritesheet files. Automatic new character generation is planned for a later version.
 
 ## 1. Local Deployment vs Cloudflare Deployment
 

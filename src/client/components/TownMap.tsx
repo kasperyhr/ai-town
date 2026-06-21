@@ -1,4 +1,5 @@
 import { useRef, useState, type CSSProperties, type PointerEvent, type ReactElement } from 'react';
+import { assetMap } from '../assetMap';
 import type { Translator } from '../i18n';
 import { activeCharacterNames, characterPosition, getBeatPlace, isCharacterActive, mapPlaces, normalizeName, placeLabel } from '../mapData';
 import type { CharacterRecord, Language, StoryBeat, WorldSummary } from '../types';
@@ -11,26 +12,14 @@ type Props = {
   t: Translator;
 };
 
-const townDecor = [
-  { type: 'tree', x: 9, y: 17 },
-  { type: 'tree', x: 14, y: 21 },
-  { type: 'tree', x: 9, y: 69 },
-  { type: 'tree', x: 16, y: 80 },
-  { type: 'tree', x: 87, y: 15 },
-  { type: 'tree', x: 91, y: 25 },
-  { type: 'tree', x: 85, y: 67 },
-  { type: 'flower', x: 30, y: 84 },
-  { type: 'flower', x: 23, y: 82 },
-  { type: 'flower', x: 58, y: 71 },
-  { type: 'rock', x: 33, y: 17 },
-  { type: 'rock', x: 67, y: 18 },
-  { type: 'rock', x: 83, y: 56 },
-];
+const renderedTileSize = 24;
+const mapPixelWidth = assetMap.width * renderedTileSize;
+const mapPixelHeight = assetMap.height * renderedTileSize;
 
 export function TownMap({ language, world, characters, beat }: Props): ReactElement {
   const activePlace = getBeatPlace(beat);
   const period = (beat?.timeSlot ?? 'day').toLowerCase().replace(/\s+/g, '-');
-  const [pan, setPan] = useState({ x: -14, y: -12 });
+  const [pan, setPan] = useState({ x: -180, y: -120 });
   const dragRef = useRef<{ id: number; startX: number; startY: number; panX: number; panY: number } | null>(null);
 
   const beginDrag = (event: PointerEvent<HTMLDivElement>): void => {
@@ -53,7 +42,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
 
   return (
     <div
-      className="town-viewport"
+      className="town-viewport asset-town-viewport"
       onPointerDown={beginDrag}
       onPointerMove={dragMap}
       onPointerUp={endDrag}
@@ -61,35 +50,61 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
       role="application"
       aria-label="Draggable town map"
     >
-      <div className="town-drag-layer" style={{ '--pan-x': `${pan.x}px`, '--pan-y': `${pan.y}px` } as CSSProperties}>
-        <div className="town-scene ai-town-scene" data-period={period}>
-          <div className="tile-layer grass-layer" />
-          <div className="map-water river-band" />
-          <div className="map-road main-road" />
-          <div className="map-road cross-road" />
-          <div className="map-road market-road" />
-          <div className="plaza town-square-tile" />
-          {townDecor.map((item, index) => (
-            <span
-              className={`town-decor decor-${item.type}`}
-              style={{ '--x': `${item.x}%`, '--y': `${item.y}%` } as CSSProperties}
-              key={`${item.type}-${index}`}
-            />
-          ))}
+      <div
+        className="town-drag-layer asset-town-drag-layer"
+        style={
+          {
+            '--pan-x': `${pan.x}px`,
+            '--pan-y': `${pan.y}px`,
+            '--map-width': `${mapPixelWidth}px`,
+            '--map-height': `${mapPixelHeight}px`,
+          } as CSSProperties
+        }
+      >
+        <div className="asset-town-scene" data-period={period}>
+          <TileLayer name="terrain" tiles={assetMap.layers.terrain} zIndex={1} />
+          <TileLayer name="bridge" tiles={assetMap.layers.bridge} zIndex={2} />
+          <TileLayer name="deco" tiles={assetMap.layers.deco} zIndex={4} />
           {mapPlaces.map((place) => (
             <div
-              className={`map-place place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
+              className={`asset-map-place ${place.key === activePlace.key ? 'active' : ''}`}
               style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
               key={place.key}
             >
-              <span className="place-building" />
               <strong>{placeLabel(place, language)}</strong>
             </div>
           ))}
           <TownCharacters world={world} characters={characters} beat={beat} activePlace={activePlace} />
-          <div className="map-light" />
+          <div className="asset-map-light" />
         </div>
       </div>
+    </div>
+  );
+}
+
+function TileLayer({ name, tiles, zIndex }: { name: string; tiles: readonly number[]; zIndex: number }): ReactElement {
+  return (
+    <div className={`asset-tile-layer asset-layer-${name}`} style={{ zIndex }}>
+      {tiles.map((gid, index) => {
+        const tile = resolveTile(gid);
+        if (!tile) return null;
+        const x = index % assetMap.width;
+        const y = Math.floor(index / assetMap.width);
+        return (
+          <span
+            className="asset-tile"
+            style={
+              {
+                '--tile-left': `${x * renderedTileSize}px`,
+                '--tile-top': `${y * renderedTileSize}px`,
+                '--tile-bg-x': `${tile.x}px`,
+                '--tile-bg-y': `${tile.y}px`,
+              } as CSSProperties
+            }
+            key={`${name}-${index}`}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -136,38 +151,29 @@ function TownCharacters({
         }));
   const activeNames = new Set(activeCharacterNames(beat).map(normalizeName));
   const hasMatchedActive = characters.some((character) => isCharacterActive(character.name, activeNames));
-  const colors = ['#d84f45', '#3b72b9', '#3f9f5f', '#8d61c4', '#c9812a', '#2d9290', '#c85d88', '#5d6874'];
-  const hairColors = ['#23332a', '#5f4634', '#e3d3a0', '#26364f', '#6c352a', '#2d5141', '#432e63', '#3f4147'];
 
   return (
     <>
       {rendered.slice(0, 12).map((character, index) => {
         const active = isCharacterActive(character.name, activeNames) || (!hasMatchedActive && Boolean(beat) && index < 2);
         const position = characterPosition(index, rendered.length, active, activePlace, beat?.timeSlot ?? '');
+        const sprite = spritePosition(index, active);
         return (
           <div
-            className={`character pixel-character ${active ? 'active' : ''}`}
+            className={`asset-character ${active ? 'active' : ''}`}
             style={
               {
                 '--x': `${position.x}%`,
                 '--y': `${position.y}%`,
-                '--color': colors[index % colors.length],
-                '--hair': hairColors[index % hairColors.length],
+                '--sprite-x': `${sprite.x}px`,
+                '--sprite-y': `${sprite.y}px`,
               } as CSSProperties
             }
             title={character.name}
             key={character.id}
           >
-            <span className="sprite-shadow" />
-            <span className="sprite-head">
-              <span className="sprite-hair" />
-              <span className="sprite-eye eye-left" />
-              <span className="sprite-eye eye-right" />
-            </span>
-            <span className="sprite-body">
-              <span className="sprite-leg leg-left" />
-              <span className="sprite-leg leg-right" />
-            </span>
+            <span className="asset-character-shadow" />
+            <span className="asset-character-sprite" />
             <small>{character.name}</small>
           </div>
         );
@@ -176,6 +182,27 @@ function TownCharacters({
   );
 }
 
+function resolveTile(rawGid: number): { x: number; y: number } | null {
+  const gid = rawGid & 0x1fffffff;
+  if (!gid) return null;
+  const tileIndex = gid - 1;
+  const col = tileIndex % assetMap.columns;
+  const row = Math.floor(tileIndex / assetMap.columns);
+  return {
+    x: -col * renderedTileSize,
+    y: -row * renderedTileSize,
+  };
+}
+
+function spritePosition(index: number, active: boolean): { x: number; y: number } {
+  const col = active ? 1 : 0;
+  const row = index % 8;
+  return {
+    x: -col * 48,
+    y: -row * 48,
+  };
+}
+
 function clampPan(value: number): number {
-  return Math.min(0, Math.max(-220, value));
+  return Math.min(24, Math.max(-420, value));
 }

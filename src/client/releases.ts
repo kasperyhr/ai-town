@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.7.2';
+export const currentVersion = 'v0.8.0';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.0',
+    date: '2026-06-20',
+    title: {
+      en: 'Asset-based pixel town renderer',
+      zh: '真实素材像素小镇渲染',
+    },
+    changes: {
+      en: [
+        'Added local AI Town pixel assets including the RPG tileset, object sheet, character spritesheet, and source tilemap.',
+        'Replaced CSS-drawn map shapes with a React tile renderer backed by the real RPG tileset and Tiled map layers.',
+        'Replaced CSS residents with spritesheet-based characters while keeping beat-driven movement and map dragging.',
+      ],
+      zh: [
+        '加入本地 AI Town 像素资源，包括 RPG tileset、物件图集、角色 spritesheet 和原始 tilemap。',
+        '用真实 RPG tileset 和 Tiled 地图层驱动的 React tile renderer，替换原来的 CSS 绘制地图。',
+        '将 CSS 小人替换为 spritesheet 角色，同时保留 beat 驱动移动和地图拖动。',
+      ],
+    },
+  },
   {
     version: 'v0.7.2',
     date: '2026-06-20',

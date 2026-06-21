@@ -1402,6 +1402,160 @@ select {
     linear-gradient(180deg, rgba(20, 32, 62, 0.2), rgba(5, 19, 32, 0.32));
 }
 
+.asset-town-viewport {
+  background: #182719;
+}
+
+.asset-town-drag-layer {
+  width: var(--map-width);
+  height: var(--map-height);
+}
+
+.asset-town-scene {
+  position: relative;
+  width: var(--map-width);
+  height: var(--map-height);
+  overflow: hidden;
+  image-rendering: pixelated;
+  background: #446f2e;
+}
+
+.asset-tile-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.asset-tile {
+  position: absolute;
+  left: var(--tile-left);
+  top: var(--tile-top);
+  width: 24px;
+  height: 24px;
+  background-image: url('/assets/ai-town/rpg-tileset.png');
+  background-position: var(--tile-bg-x) var(--tile-bg-y);
+  background-size: 2400px 2400px;
+  image-rendering: pixelated;
+}
+
+.asset-layer-deco .asset-tile {
+  filter: drop-shadow(0 3px 0 rgba(13, 24, 16, 0.28));
+}
+
+.asset-map-place {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 12;
+  transform: translate(-50%, 16px);
+  pointer-events: none;
+}
+
+.asset-map-place strong {
+  display: block;
+  max-width: 136px;
+  overflow: hidden;
+  padding: 4px 7px;
+  border: 2px solid rgba(37, 48, 35, 0.34);
+  border-radius: 0;
+  background: rgba(255, 249, 219, 0.94);
+  box-shadow:
+    3px 3px 0 rgba(28, 41, 30, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  color: #17201b;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.asset-map-place.active strong {
+  background: #fff3a6;
+  box-shadow:
+    3px 3px 0 rgba(28, 41, 30, 0.28),
+    0 0 0 5px rgba(255, 243, 166, 0.36);
+}
+
+.asset-character {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 14;
+  width: 48px;
+  height: 64px;
+  transform: translate(-50%, -72%);
+  transition:
+    left 420ms ease,
+    top 420ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.asset-character.active {
+  transform: translate(-50%, -72%) scale(1.08);
+  filter: drop-shadow(0 0 8px rgba(255, 238, 131, 0.9));
+}
+
+.asset-character-shadow {
+  position: absolute;
+  left: 10px;
+  bottom: 7px;
+  width: 30px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(10, 20, 15, 0.34);
+}
+
+.asset-character-sprite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  background-image: url('/assets/ai-town/32x32folk.png');
+  background-position: var(--sprite-x) var(--sprite-y);
+  background-size: 576px 384px;
+  image-rendering: pixelated;
+}
+
+.asset-character small {
+  position: absolute;
+  left: 50%;
+  top: 48px;
+  max-width: 110px;
+  overflow: hidden;
+  transform: translateX(-50%);
+  padding: 3px 7px;
+  border: 2px solid rgba(32, 44, 35, 0.24);
+  border-radius: 0;
+  background: rgba(255, 249, 219, 0.94);
+  box-shadow: 3px 3px 0 rgba(20, 33, 25, 0.22);
+  color: #17201b;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asset-map-light {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 34%, rgba(16, 27, 18, 0.12)),
+    radial-gradient(circle at 46% 42%, transparent 0 62%, rgba(5, 14, 9, 0.22) 100%);
+  mix-blend-mode: multiply;
+}
+
+.asset-town-scene[data-period='night'] .asset-map-light,
+.asset-town-scene[data-period='late-night'] .asset-map-light {
+  background:
+    linear-gradient(180deg, rgba(16, 30, 70, 0.24), rgba(5, 12, 30, 0.38)),
+    radial-gradient(circle at 46% 42%, transparent 0 45%, rgba(3, 10, 22, 0.46) 100%);
+}
+
 .town-caption {
   padding: 18px;
   background: #ffffff;

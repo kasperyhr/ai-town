@@ -4,14 +4,14 @@ A lightweight AI town inspired by AI Town. The project is designed for Cloudflar
 
 ## Current Version
 
-Current version: `v0.7.2`, released on `2026-06-20`.
+Current version: `v0.8.0`, released on `2026-06-20`.
 
 The current version includes:
 
 - Vite frontend shell with English and Chinese language switching.
 - React front-end architecture split into API, i18n, map, sidebar, editor, and story history modules.
 - Overlay story sidebar that does not resize or stretch the map.
-- AI Town-inspired top-down RPG tilemap with grass tiles, paths, water, buildings, and sprite-like characters.
+- Asset-based AI Town-inspired top-down RPG tilemap using local tileset and spritesheet files.
 - Fixed-ratio draggable town map viewport.
 - Cloudflare Worker API skeleton.
 - D1 schema for users, sessions, worlds, characters, memories, lexicon entries, and stories.
@@ -30,7 +30,7 @@ The current version includes:
 - Per-story Cron eligibility, with Cron disabled by default in `wrangler.jsonc`.
 - Local and Cloudflare deployment documentation draft.
 
-Next planned version: `v0.8.0`, focused on deeper story presentation, richer scene details, and automatic recurring character generation.
+Next planned version: `v0.8.1`, focused on refining sprite animation frames, map labels, and scene composition.
 
 ## Scripts
 
@@ -39,6 +39,13 @@ npm install
 npm run build
 npm run dev:worker
 ```
+
+## Asset Credits
+
+The pixel map renderer uses local copies of public AI Town demo assets under `public/assets/ai-town/`, including RPG tiles, object layers, the source Tiled map JSON, and character sprites. Keep these credits with the project when redistributing or publishing the app:
+
+- AI Town by a16z-infra: https://github.com/a16z-infra/ai-town
+- Original AI Town README credits include PixiJS rendering, OpenGameArt 16x16 tilesets, ansimuz assets, and Mounir Tohami UI assets.
 
 Deployment guides:
 
