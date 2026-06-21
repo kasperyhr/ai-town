@@ -20,6 +20,8 @@ type Props = {
   t: Translator;
 };
 
+type Direction = 'north' | 'south' | 'east' | 'west';
+
 const renderedTileSize = 48;
 const mapPixelWidth = assetMap.width * renderedTileSize;
 const mapPixelHeight = assetMap.height * renderedTileSize;
@@ -94,6 +96,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
               style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
               key={place.key}
             >
+              <span className="asset-place-building" />
               <span className="asset-place-pin" />
               <strong>{placeLabel(place, language)}</strong>
             </div>
@@ -208,17 +211,63 @@ function TownCharacter({
   position: { x: number; y: number };
 }): ReactElement {
   const previousPositionRef = useRef(position);
+  const timerRef = useRef<number[]>([]);
+  const visualPositionRef = useRef(position);
+  const [visualPosition, setVisualPosition] = useState(position);
   const [walking, setWalking] = useState(false);
-  const sprite = spritePosition(character, active);
+  const [direction, setDirection] = useState<Direction>('south');
+  const [moveMs, setMoveMs] = useState(0);
+  const sprite = spritePosition(character, direction);
+
+  const setVisual = (nextPosition: { x: number; y: number }): void => {
+    visualPositionRef.current = nextPosition;
+    setVisualPosition(nextPosition);
+  };
 
   useEffect(() => {
-    const previous = previousPositionRef.current;
-    const moved = Math.abs(previous.x - position.x) > 0.1 || Math.abs(previous.y - position.y) > 0.1;
+    for (const timer of timerRef.current) window.clearTimeout(timer);
+    timerRef.current = [];
+
+    const start = visualPositionRef.current;
+    const dx = position.x - start.x;
+    const dy = position.y - start.y;
+    const moved = Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1;
     previousPositionRef.current = position;
-    if (!moved) return;
-    setWalking(true);
-    const timer = window.setTimeout(() => setWalking(false), 1250);
-    return () => window.clearTimeout(timer);
+    if (!moved) {
+      setWalking(false);
+      setMoveMs(0);
+      return undefined;
+    }
+
+    let elapsed = 0;
+    const queueSegment = (nextPosition: { x: number; y: number }, segmentMs: number, nextDirection: Direction): void => {
+      const startTimer = window.setTimeout(() => {
+        setDirection(nextDirection);
+        setMoveMs(segmentMs);
+        setWalking(true);
+        setVisual(nextPosition);
+      }, elapsed);
+      timerRef.current.push(startTimer);
+      elapsed += segmentMs;
+    };
+
+    if (Math.abs(dx) > 0.1) {
+      queueSegment({ x: position.x, y: start.y }, movementDuration(Math.abs(dx) * mapPixelWidth / 100), dx > 0 ? 'east' : 'west');
+    }
+    if (Math.abs(dy) > 0.1) {
+      queueSegment({ x: position.x, y: position.y }, movementDuration(Math.abs(dy) * mapPixelHeight / 100), dy > 0 ? 'south' : 'north');
+    }
+
+    const finishTimer = window.setTimeout(() => {
+      setWalking(false);
+      setMoveMs(0);
+    }, elapsed + 80);
+    timerRef.current.push(finishTimer);
+
+    return () => {
+      for (const timer of timerRef.current) window.clearTimeout(timer);
+      timerRef.current = [];
+    };
   }, [position.x, position.y]);
 
   return (
@@ -226,10 +275,13 @@ function TownCharacter({
       className={`asset-character ${active ? 'active' : ''} ${walking ? 'walking' : ''}`}
       style={
         {
-          '--x': `${position.x}%`,
-          '--y': `${position.y}%`,
+          '--x': `${visualPosition.x}%`,
+          '--y': `${visualPosition.y}%`,
           '--sprite-x': `${sprite.x}px`,
+          '--sprite-x-left': `${sprite.leftX}px`,
+          '--sprite-x-right': `${sprite.rightX}px`,
           '--sprite-y': `${sprite.y}px`,
+          '--move-ms': `${moveMs}ms`,
         } as CSSProperties
       }
       title={character.name}
@@ -265,17 +317,30 @@ function tileTransform(horizontal: boolean, vertical: boolean, diagonal: boolean
   return transforms.length > 0 ? transforms.join(' ') : 'none';
 }
 
-function spritePosition(character: CharacterRecord, active: boolean): { x: number; y: number } {
+function spritePosition(character: CharacterRecord, direction: Direction): { x: number; leftX: number; rightX: number; y: number } {
   const seed = `${character.name}|${character.personality}|${character.gender}|${character.appearance}`;
   const code = Array.from(seed).reduce((sum, char) => sum + char.charCodeAt(0), 0);
   const actor = code % 8;
-  const facing = active ? 1 + (code % 3) : code % 4;
-  const col = Math.min(facing, 3);
-  const row = actor;
+  const group = actor % 4;
+  const bank = Math.floor(actor / 4);
+  const directionRow: Record<Direction, number> = {
+    south: 0,
+    west: 1,
+    east: 2,
+    north: 3,
+  };
+  const row = bank * 4 + directionRow[direction];
+  const baseCol = group * 3;
   return {
-    x: -col * 64,
+    x: -(baseCol + 1) * 64,
+    leftX: -baseCol * 64,
+    rightX: -(baseCol + 2) * 64,
     y: -row * 64,
   };
+}
+
+function movementDuration(pixelDistance: number): number {
+  return Math.round(Math.min(4200, Math.max(900, pixelDistance * 18)));
 }
 
 function clampAxis(value: number, viewportLength: number, mapLength: number): number {

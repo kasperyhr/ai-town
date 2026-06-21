@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.3';
+export const currentVersion = 'v0.8.4';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.4',
+    date: '2026-06-21',
+    title: {
+      en: 'RPG walking and asset landmarks',
+      zh: 'RPG 行走与素材地标',
+    },
+    changes: {
+      en: [
+        'Changed character movement into slower orthogonal RPG-style walking segments instead of diagonal drifting.',
+        'Fixed walking animation frame selection so residents step through matching spritesheet frames.',
+        'Restored landmarks with real pixel asset crops instead of CSS-drawn buildings.',
+      ],
+      zh: [
+        '将角色移动改成更慢的横向/竖向 RPG 分段行走，而不是斜线漂移。',
+        '修正行走动画取帧，让居民使用同一角色同一方向的匹配 spritesheet 帧。',
+        '用真实像素资源裁切恢复地点地标，不再使用 CSS 绘制建筑。',
+      ],
+    },
+  },
   {
     version: 'v0.8.3',
     date: '2026-06-20',

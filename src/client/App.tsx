@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactElement } from 'react';
+import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactElement } from 'react';
 import * as api from './api';
 import { PencilIcon } from './icons';
 import { makeTranslator, type Translator } from './i18n';

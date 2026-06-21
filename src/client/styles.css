@@ -1465,6 +1465,18 @@ select {
   image-rendering: pixelated;
 }
 
+.asset-place-building {
+  display: block;
+  width: 96px;
+  height: 82px;
+  margin-bottom: -18px;
+  background-image: url('/assets/ai-town/gentle-obj.png');
+  background-repeat: no-repeat;
+  background-size: 1440px 1024px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 7px 0 rgba(14, 24, 17, 0.24));
+}
+
 .asset-place strong {
   display: block;
   max-width: 136px;
@@ -1482,6 +1494,54 @@ select {
   text-overflow: ellipsis;
   text-shadow: none;
   white-space: nowrap;
+}
+
+.asset-place-square .asset-place-building {
+  width: 78px;
+  height: 72px;
+  background-position: -1248px -644px;
+}
+
+.asset-place-archive .asset-place-building {
+  width: 92px;
+  height: 72px;
+  background-position: -1308px -526px;
+}
+
+.asset-place-workshop .asset-place-building {
+  width: 96px;
+  height: 74px;
+  background-position: -1336px -652px;
+}
+
+.asset-place-garden .asset-place-building {
+  width: 92px;
+  height: 70px;
+  background-position: -1064px -654px;
+}
+
+.asset-place-bridge .asset-place-building {
+  width: 98px;
+  height: 58px;
+  background-position: -1144px -594px;
+}
+
+.asset-place-bakery .asset-place-building {
+  width: 112px;
+  height: 92px;
+  background-position: -996px -512px;
+}
+
+.asset-place-market .asset-place-building {
+  width: 122px;
+  height: 72px;
+  background-position: -1216px -648px;
+}
+
+.asset-place-station .asset-place-building {
+  width: 86px;
+  height: 84px;
+  background-position: -1248px -740px;
 }
 
 .asset-place.active .asset-place-pin {
@@ -1510,8 +1570,8 @@ select {
   height: 82px;
   transform: translate(-50%, -72%);
   transition:
-    left 1200ms cubic-bezier(0.2, 0.74, 0.25, 1),
-    top 1200ms cubic-bezier(0.2, 0.74, 0.25, 1),
+    left var(--move-ms) linear,
+    top var(--move-ms) linear,
     transform 260ms ease,
     filter 180ms ease;
 }
@@ -1598,11 +1658,12 @@ select {
 }
 
 @keyframes spriteStep {
-  0% {
-    background-position: var(--sprite-x) var(--sprite-y);
+  0%,
+  100% {
+    background-position: var(--sprite-x-left) var(--sprite-y);
   }
   50% {
-    background-position: calc(var(--sprite-x) - 64px) var(--sprite-y);
+    background-position: var(--sprite-x-right) var(--sprite-y);
   }
 }
 
