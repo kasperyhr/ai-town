@@ -4,13 +4,13 @@ A lightweight AI town inspired by AI Town. The project is designed for Cloudflar
 
 ## Current Version
 
-Current version: `v0.7.0`, released on `2026-06-20`.
+Current version: `v0.7.1`, released on `2026-06-20`.
 
 The current version includes:
 
 - Vite frontend shell with English and Chinese language switching.
 - React front-end architecture split into API, i18n, map, sidebar, editor, and story history modules.
-- Pixel-style town map with tile texture, buildings, and sprite-like characters.
+- AI Town-inspired top-down RPG tilemap with grass tiles, paths, water, buildings, and sprite-like characters.
 - Cloudflare Worker API skeleton.
 - D1 schema for users, sessions, worlds, characters, memories, lexicon entries, and stories.
 - Security headers and configuration checks.

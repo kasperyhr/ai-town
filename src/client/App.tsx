@@ -193,7 +193,7 @@ export function App(): ReactElement {
   };
 
   return (
-    <main className={`shell ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+    <main className={`shell ${bootstrap.authenticated ? (sidebarOpen ? 'sidebar-open' : 'sidebar-closed') : 'no-sidebar'}`}>
       <Topbar bootstrap={bootstrap} language={language} showStatusPage={showStatusPage} t={t} onLanguageChange={setLanguageState} />
       {new URLSearchParams(window.location.search).has('auth_error') ? <div className="alert">{t('authError')}</div> : null}
       <Sidebar

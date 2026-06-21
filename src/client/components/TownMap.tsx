@@ -11,20 +11,41 @@ type Props = {
   t: Translator;
 };
 
+const townDecor = [
+  { type: 'tree', x: 9, y: 17 },
+  { type: 'tree', x: 14, y: 21 },
+  { type: 'tree', x: 9, y: 69 },
+  { type: 'tree', x: 16, y: 80 },
+  { type: 'tree', x: 87, y: 15 },
+  { type: 'tree', x: 91, y: 25 },
+  { type: 'tree', x: 85, y: 67 },
+  { type: 'flower', x: 30, y: 84 },
+  { type: 'flower', x: 23, y: 82 },
+  { type: 'flower', x: 58, y: 71 },
+  { type: 'rock', x: 33, y: 17 },
+  { type: 'rock', x: 67, y: 18 },
+  { type: 'rock', x: 83, y: 56 },
+];
+
 export function TownMap({ language, world, characters, beat }: Props): ReactElement {
   const activePlace = getBeatPlace(beat);
   const period = (beat?.timeSlot ?? 'day').toLowerCase().replace(/\s+/g, '-');
 
   return (
-    <div className="town-scene" data-period={period}>
-      <div className="pixel-sun" />
-      <div className="pixel-cloud cloud-one" />
-      <div className="pixel-cloud cloud-two" />
-      <div className="tile-field" />
+    <div className="town-scene ai-town-scene" data-period={period}>
+      <div className="tile-layer grass-layer" />
+      <div className="map-water river-band" />
       <div className="map-road main-road" />
       <div className="map-road cross-road" />
-      <div className="map-water" />
-      <div className="plaza" />
+      <div className="map-road market-road" />
+      <div className="plaza town-square-tile" />
+      {townDecor.map((item, index) => (
+        <span
+          className={`town-decor decor-${item.type}`}
+          style={{ '--x': `${item.x}%`, '--y': `${item.y}%` } as CSSProperties}
+          key={`${item.type}-${index}`}
+        />
+      ))}
       {mapPlaces.map((place) => (
         <div
           className={`map-place place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
@@ -36,7 +57,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
         </div>
       ))}
       <TownCharacters world={world} characters={characters} beat={beat} activePlace={activePlace} />
-      <div className="pixel-vignette" />
+      <div className="map-light" />
     </div>
   );
 }
@@ -83,7 +104,7 @@ function TownCharacters({
         }));
   const activeNames = new Set(activeCharacterNames(beat).map(normalizeName));
   const hasMatchedActive = characters.some((character) => isCharacterActive(character.name, activeNames));
-  const colors = ['#f66f5e', '#3d8bfd', '#28a96f', '#a26be8', '#d28b19', '#0f9f9a', '#cf5f98', '#697386'];
+  const colors = ['#d84f45', '#3b72b9', '#3f9f5f', '#8d61c4', '#c9812a', '#2d9290', '#c85d88', '#5d6874'];
   const hairColors = ['#23332a', '#5f4634', '#e3d3a0', '#26364f', '#6c352a', '#2d5141', '#432e63', '#3f4147'];
 
   return (

@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.7.0';
+export const currentVersion = 'v0.7.1';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.7.1',
+    date: '2026-06-20',
+    title: {
+      en: 'AI Town-style map polish',
+      zh: 'AI Town 风格地图优化',
+    },
+    changes: {
+      en: [
+        'Removed the empty left sidebar gutter from the signed-out screen.',
+        'Reworked the town map toward an AI Town-inspired top-down RPG tilemap with grass tiles, dirt paths, water, trees, rocks, flowers, buildings, and sprite residents.',
+        'Cleaned up corrupted Chinese map labels and dialogue speaker parsing.',
+      ],
+      zh: [
+        '未登录页面不再预留空的左侧 sidebar 空间。',
+        '将小镇地图改成更接近 AI Town 的俯视 RPG tilemap：草地格、泥路、水面、树、石头、花、建筑和 sprite 居民在同一张地图里呈现。',
+        '修复损坏的中文地图地点名和对白说话人解析。',
+      ],
+    },
+  },
   {
     version: 'v0.7.0',
     date: '2026-06-20',
