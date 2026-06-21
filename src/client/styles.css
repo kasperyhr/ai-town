@@ -1430,28 +1430,43 @@ select {
   position: absolute;
   left: var(--tile-left);
   top: var(--tile-top);
-  width: 24px;
-  height: 24px;
+  width: 48px;
+  height: 48px;
   background-image: url('/assets/ai-town/rpg-tileset.png');
   background-position: var(--tile-bg-x) var(--tile-bg-y);
-  background-size: 2400px 2400px;
+  background-size: 4800px 4800px;
   image-rendering: pixelated;
+  transform: var(--tile-transform);
+  transform-origin: center;
 }
 
 .asset-layer-deco .asset-tile {
   filter: drop-shadow(0 3px 0 rgba(13, 24, 16, 0.28));
 }
 
-.asset-map-place {
+.asset-place {
   position: absolute;
   left: var(--x);
   top: var(--y);
   z-index: 12;
-  transform: translate(-50%, 16px);
+  display: grid;
+  justify-items: center;
+  transform: translate(-50%, -58%);
   pointer-events: none;
 }
 
-.asset-map-place strong {
+.asset-place-building {
+  display: block;
+  width: 96px;
+  height: 96px;
+  background-image: url('/assets/ai-town/gentle-obj.png');
+  background-repeat: no-repeat;
+  background-size: 1440px 1024px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 7px 0 rgba(14, 24, 17, 0.28));
+}
+
+.asset-place strong {
   display: block;
   max-width: 136px;
   overflow: hidden;
@@ -1470,11 +1485,59 @@ select {
   white-space: nowrap;
 }
 
-.asset-map-place.active strong {
+.asset-place.active strong {
   background: #fff3a6;
   box-shadow:
     3px 3px 0 rgba(28, 41, 30, 0.28),
     0 0 0 5px rgba(255, 243, 166, 0.36);
+}
+
+.asset-place-square .asset-place-building {
+  width: 128px;
+  height: 104px;
+  background-position: -1032px -520px;
+}
+
+.asset-place-archive .asset-place-building {
+  width: 96px;
+  height: 80px;
+  background-position: -1260px -520px;
+}
+
+.asset-place-workshop .asset-place-building {
+  width: 104px;
+  height: 96px;
+  background-position: -1328px -624px;
+}
+
+.asset-place-garden .asset-place-building {
+  width: 112px;
+  height: 96px;
+  background-position: -968px -704px;
+}
+
+.asset-place-bridge .asset-place-building {
+  width: 128px;
+  height: 80px;
+  background-position: -0px -200px;
+}
+
+.asset-place-bakery .asset-place-building {
+  width: 112px;
+  height: 104px;
+  background-position: -996px -512px;
+}
+
+.asset-place-market .asset-place-building {
+  width: 144px;
+  height: 88px;
+  background-position: -1216px -656px;
+}
+
+.asset-place-station .asset-place-building {
+  width: 96px;
+  height: 104px;
+  background-position: -1184px -736px;
 }
 
 .asset-character {
@@ -1482,13 +1545,13 @@ select {
   left: var(--x);
   top: var(--y);
   z-index: 14;
-  width: 48px;
-  height: 64px;
+  width: 64px;
+  height: 82px;
   transform: translate(-50%, -72%);
   transition:
-    left 420ms ease,
-    top 420ms ease,
-    transform 180ms ease,
+    left 1200ms cubic-bezier(0.2, 0.74, 0.25, 1),
+    top 1200ms cubic-bezier(0.2, 0.74, 0.25, 1),
+    transform 260ms ease,
     filter 180ms ease;
 }
 
@@ -1500,9 +1563,9 @@ select {
 .asset-character-shadow {
   position: absolute;
   left: 10px;
-  bottom: 7px;
-  width: 30px;
-  height: 10px;
+  bottom: 12px;
+  width: 40px;
+  height: 12px;
   border-radius: 50%;
   background: rgba(10, 20, 15, 0.34);
 }
@@ -1511,18 +1574,18 @@ select {
   position: absolute;
   left: 0;
   top: 0;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   background-image: url('/assets/ai-town/32x32folk.png');
   background-position: var(--sprite-x) var(--sprite-y);
-  background-size: 576px 384px;
+  background-size: 768px 512px;
   image-rendering: pixelated;
 }
 
 .asset-character small {
   position: absolute;
   left: 50%;
-  top: 48px;
+  top: 64px;
   max-width: 110px;
   overflow: hidden;
   transform: translateX(-50%);

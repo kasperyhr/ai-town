@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.0';
+export const currentVersion = 'v0.8.1';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.1',
+    date: '2026-06-20',
+    title: {
+      en: 'Pixel map composition polish',
+      zh: '像素地图构图优化',
+    },
+    changes: {
+      en: [
+        'Applied Tiled flip flags so mirrored tree and decoration tiles render correctly.',
+        'Expanded the rendered map scale to reduce empty side gutters in wide viewports.',
+        'Added place buildings from the object sheet, varied character sprites by profile, and smoothed character movement transitions.',
+      ],
+      zh: [
+        '应用 Tiled 翻转标记，修复镜像树和装饰 tile 渲染异常。',
+        '放大实际渲染地图尺寸，减少宽屏视口两侧空白。',
+        '使用物件图集为地点添加建筑，根据角色资料选择不同 sprite，并让角色移动更平滑。',
+      ],
+    },
+  },
   {
     version: 'v0.8.0',
     date: '2026-06-20',

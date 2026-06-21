@@ -12,7 +12,7 @@ type Props = {
   t: Translator;
 };
 
-const renderedTileSize = 24;
+const renderedTileSize = 48;
 const mapPixelWidth = assetMap.width * renderedTileSize;
 const mapPixelHeight = assetMap.height * renderedTileSize;
 
@@ -67,10 +67,11 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
           <TileLayer name="deco" tiles={assetMap.layers.deco} zIndex={4} />
           {mapPlaces.map((place) => (
             <div
-              className={`asset-map-place ${place.key === activePlace.key ? 'active' : ''}`}
+              className={`asset-place asset-place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
               style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
               key={place.key}
             >
+              <span className="asset-place-building" />
               <strong>{placeLabel(place, language)}</strong>
             </div>
           ))}
@@ -99,6 +100,7 @@ function TileLayer({ name, tiles, zIndex }: { name: string; tiles: readonly numb
                 '--tile-top': `${y * renderedTileSize}px`,
                 '--tile-bg-x': `${tile.x}px`,
                 '--tile-bg-y': `${tile.y}px`,
+                '--tile-transform': tile.transform,
               } as CSSProperties
             }
             key={`${name}-${index}`}
@@ -157,7 +159,7 @@ function TownCharacters({
       {rendered.slice(0, 12).map((character, index) => {
         const active = isCharacterActive(character.name, activeNames) || (!hasMatchedActive && Boolean(beat) && index < 2);
         const position = characterPosition(index, rendered.length, active, activePlace, beat?.timeSlot ?? '');
-        const sprite = spritePosition(index, active);
+        const sprite = spritePosition(character, active);
         return (
           <div
             className={`asset-character ${active ? 'active' : ''}`}
@@ -182,7 +184,10 @@ function TownCharacters({
   );
 }
 
-function resolveTile(rawGid: number): { x: number; y: number } | null {
+function resolveTile(rawGid: number): { x: number; y: number; transform: string } | null {
+  const flippedHorizontally = Boolean(rawGid & 0x80000000);
+  const flippedVertically = Boolean(rawGid & 0x40000000);
+  const flippedDiagonally = Boolean(rawGid & 0x20000000);
   const gid = rawGid & 0x1fffffff;
   if (!gid) return null;
   const tileIndex = gid - 1;
@@ -191,18 +196,31 @@ function resolveTile(rawGid: number): { x: number; y: number } | null {
   return {
     x: -col * renderedTileSize,
     y: -row * renderedTileSize,
+    transform: tileTransform(flippedHorizontally, flippedVertically, flippedDiagonally),
   };
 }
 
-function spritePosition(index: number, active: boolean): { x: number; y: number } {
-  const col = active ? 1 : 0;
-  const row = index % 8;
+function tileTransform(horizontal: boolean, vertical: boolean, diagonal: boolean): string {
+  const transforms: string[] = [];
+  if (diagonal) transforms.push('rotate(90deg)');
+  if (horizontal) transforms.push('scaleX(-1)');
+  if (vertical) transforms.push('scaleY(-1)');
+  return transforms.length > 0 ? transforms.join(' ') : 'none';
+}
+
+function spritePosition(character: CharacterRecord, active: boolean): { x: number; y: number } {
+  const seed = `${character.name}|${character.personality}|${character.gender}|${character.appearance}`;
+  const code = Array.from(seed).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  const actor = code % 8;
+  const facing = active ? 1 + (code % 3) : code % 4;
+  const col = Math.min(facing, 3);
+  const row = actor;
   return {
-    x: -col * 48,
-    y: -row * 48,
+    x: -col * 64,
+    y: -row * 64,
   };
 }
 
 function clampPan(value: number): number {
-  return Math.min(24, Math.max(-420, value));
+  return Math.min(24, Math.max(-960, value));
 }
