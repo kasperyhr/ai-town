@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.2';
+export const currentVersion = 'v0.8.3';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.3',
+    date: '2026-06-20',
+    title: {
+      en: 'Walk animation and landmark cleanup',
+      zh: '行走动画与地标清理',
+    },
+    changes: {
+      en: [
+        'Removed CSS house-like landmarks that clashed with the asset map.',
+        'Kept place labels but changed active locations to a subtle pixel cursor instead of fake buildings.',
+        'Added a walking state with sprite frame stepping and character bobbing during movement.',
+      ],
+      zh: [
+        '移除和素材地图不匹配的 CSS 房子式地标。',
+        '保留地点标签，但将当前地点改成轻量像素光标，而不是假建筑。',
+        '加入移动中的 walking 状态，角色会切换 sprite 帧并产生步行动作。',
+      ],
+    },
+  },
   {
     version: 'v0.8.2',
     date: '2026-06-20',

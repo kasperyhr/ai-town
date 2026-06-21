@@ -1,4 +1,12 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactElement } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+  type ReactElement,
+} from 'react';
 import { assetMap } from '../assetMap';
 import type { Translator } from '../i18n';
 import { activeCharacterNames, characterPosition, getBeatPlace, isCharacterActive, mapPlaces, normalizeName, placeLabel } from '../mapData';
@@ -86,7 +94,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
               style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
               key={place.key}
             >
-              <span className="asset-place-marker" />
+              <span className="asset-place-pin" />
               <strong>{placeLabel(place, language)}</strong>
             </div>
           ))}
@@ -168,34 +176,68 @@ function TownCharacters({
         }));
   const activeNames = new Set(activeCharacterNames(beat).map(normalizeName));
   const hasMatchedActive = characters.some((character) => isCharacterActive(character.name, activeNames));
+  const positions = rendered.slice(0, 12).map((character, index) => {
+    const active = isCharacterActive(character.name, activeNames) || (!hasMatchedActive && Boolean(beat) && index < 2);
+    const position = characterPosition(index, rendered.length, active, activePlace, beat?.timeSlot ?? '');
+    return { character, index, active, position };
+  });
 
   return (
     <>
-      {rendered.slice(0, 12).map((character, index) => {
-        const active = isCharacterActive(character.name, activeNames) || (!hasMatchedActive && Boolean(beat) && index < 2);
-        const position = characterPosition(index, rendered.length, active, activePlace, beat?.timeSlot ?? '');
-        const sprite = spritePosition(character, active);
+      {positions.map(({ character, active, position }) => {
         return (
-          <div
-            className={`asset-character ${active ? 'active' : ''}`}
-            style={
-              {
-                '--x': `${position.x}%`,
-                '--y': `${position.y}%`,
-                '--sprite-x': `${sprite.x}px`,
-                '--sprite-y': `${sprite.y}px`,
-              } as CSSProperties
-            }
-            title={character.name}
+          <TownCharacter
+            character={character}
+            active={active}
+            position={position}
             key={character.id}
-          >
-            <span className="asset-character-shadow" />
-            <span className="asset-character-sprite" />
-            <small>{character.name}</small>
-          </div>
+          />
         );
       })}
     </>
+  );
+}
+
+function TownCharacter({
+  character,
+  active,
+  position,
+}: {
+  character: CharacterRecord;
+  active: boolean;
+  position: { x: number; y: number };
+}): ReactElement {
+  const previousPositionRef = useRef(position);
+  const [walking, setWalking] = useState(false);
+  const sprite = spritePosition(character, active);
+
+  useEffect(() => {
+    const previous = previousPositionRef.current;
+    const moved = Math.abs(previous.x - position.x) > 0.1 || Math.abs(previous.y - position.y) > 0.1;
+    previousPositionRef.current = position;
+    if (!moved) return;
+    setWalking(true);
+    const timer = window.setTimeout(() => setWalking(false), 1250);
+    return () => window.clearTimeout(timer);
+  }, [position.x, position.y]);
+
+  return (
+    <div
+      className={`asset-character ${active ? 'active' : ''} ${walking ? 'walking' : ''}`}
+      style={
+        {
+          '--x': `${position.x}%`,
+          '--y': `${position.y}%`,
+          '--sprite-x': `${sprite.x}px`,
+          '--sprite-y': `${sprite.y}px`,
+        } as CSSProperties
+      }
+      title={character.name}
+    >
+      <span className="asset-character-shadow" />
+      <span className="asset-character-sprite" />
+      <small>{character.name}</small>
+    </div>
   );
 }
 

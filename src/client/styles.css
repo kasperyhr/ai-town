@@ -1451,23 +1451,17 @@ select {
   z-index: 12;
   display: grid;
   justify-items: center;
-  transform: translate(-50%, -58%);
+  transform: translate(-50%, -12%);
   pointer-events: none;
 }
 
-.asset-place-marker {
+.asset-place-pin {
   display: block;
   position: relative;
-  width: 74px;
-  height: 64px;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 6px 0 rgba(14, 24, 17, 0.24));
-}
-
-.asset-place-marker::before,
-.asset-place-marker::after {
-  position: absolute;
-  content: '';
+  width: 24px;
+  height: 18px;
+  margin-bottom: 4px;
+  opacity: 0;
   image-rendering: pixelated;
 }
 
@@ -1490,138 +1484,21 @@ select {
   white-space: nowrap;
 }
 
+.asset-place.active .asset-place-pin {
+  opacity: 1;
+  background: #fff3a6;
+  box-shadow:
+    -10px 10px 0 -5px #fff3a6,
+    10px 10px 0 -5px #fff3a6,
+    0 15px 0 -7px rgba(23, 32, 27, 0.34);
+  animation: pixelPulse 900ms steps(2, end) infinite;
+}
+
 .asset-place.active strong {
   background: #fff3a6;
   box-shadow:
     3px 3px 0 rgba(28, 41, 30, 0.28),
     0 0 0 5px rgba(255, 243, 166, 0.36);
-}
-
-.asset-place-square .asset-place-marker {
-  width: 70px;
-  height: 54px;
-  background:
-    linear-gradient(90deg, rgba(123, 91, 44, 0.18) 1px, transparent 1px) 0 0 / 12px 12px,
-    linear-gradient(rgba(123, 91, 44, 0.18) 1px, transparent 1px) 0 0 / 12px 12px,
-    #d5b263;
-  box-shadow: inset 0 0 0 6px #ead98c;
-}
-
-.asset-place-square .asset-place-marker::before {
-  left: 29px;
-  top: 14px;
-  width: 12px;
-  height: 22px;
-  background: #527f68;
-}
-
-.asset-place-archive .asset-place-marker,
-.asset-place-bakery .asset-place-marker,
-.asset-place-workshop .asset-place-marker,
-.asset-place-station .asset-place-marker {
-  width: 76px;
-  height: 68px;
-  background: #f1d58b;
-  box-shadow: inset 0 -12px 0 rgba(101, 72, 44, 0.18);
-}
-
-.asset-place-archive .asset-place-marker::before,
-.asset-place-bakery .asset-place-marker::before,
-.asset-place-workshop .asset-place-marker::before,
-.asset-place-station .asset-place-marker::before {
-  left: -6px;
-  top: -18px;
-  width: 88px;
-  height: 18px;
-  background: #8c4b35;
-  box-shadow: inset 0 -5px 0 rgba(255, 219, 133, 0.24);
-}
-
-.asset-place-archive .asset-place-marker::after,
-.asset-place-bakery .asset-place-marker::after,
-.asset-place-workshop .asset-place-marker::after,
-.asset-place-station .asset-place-marker::after {
-  left: 28px;
-  bottom: 0;
-  width: 18px;
-  height: 26px;
-  background: #5f3f2f;
-  box-shadow:
-    -22px -16px 0 -5px #78a8c7,
-    22px -16px 0 -5px #78a8c7;
-}
-
-.asset-place-workshop .asset-place-marker {
-  background: #c9d1d8;
-}
-
-.asset-place-workshop .asset-place-marker::before,
-.asset-place-station .asset-place-marker::before {
-  background: #4d5962;
-}
-
-.asset-place-bakery .asset-place-marker::before {
-  background: repeating-linear-gradient(90deg, #d95a4b 0 10px, #fff1bd 10px 20px);
-}
-
-.asset-place-garden .asset-place-marker {
-  width: 82px;
-  height: 58px;
-}
-
-.asset-place-garden .asset-place-marker::before {
-  left: 12px;
-  top: 8px;
-  width: 18px;
-  height: 18px;
-  background: #e85e78;
-  box-shadow:
-    24px 0 0 #fff0a9,
-    48px 4px 0 #e85e78,
-    10px 24px 0 #fff0a9,
-    38px 26px 0 #f6c85f;
-}
-
-.asset-place-garden .asset-place-marker::after {
-  left: 0;
-  bottom: 0;
-  width: 82px;
-  height: 16px;
-  background: #5da95e;
-  box-shadow: inset 0 -5px 0 rgba(29, 77, 39, 0.24);
-}
-
-.asset-place-bridge .asset-place-marker {
-  width: 110px;
-  height: 38px;
-  background: repeating-linear-gradient(90deg, #9a613b 0 14px, #7f4f35 14px 20px);
-  box-shadow: inset 0 -8px 0 rgba(82, 49, 34, 0.22);
-}
-
-.asset-place-market .asset-place-marker {
-  width: 112px;
-  height: 56px;
-}
-
-.asset-place-market .asset-place-marker::before {
-  left: 4px;
-  top: 6px;
-  width: 24px;
-  height: 24px;
-  background: #d99132;
-  box-shadow:
-    34px 0 0 #c85b3d,
-    68px 0 0 #e4c75e,
-    16px 24px 0 #9f6b3d,
-    52px 24px 0 #7f5a3d;
-}
-
-.asset-place-market .asset-place-marker::after {
-  left: 0;
-  bottom: 0;
-  width: 112px;
-  height: 10px;
-  background: #8d5a35;
 }
 
 .asset-character {
@@ -1644,6 +1521,10 @@ select {
   filter: drop-shadow(0 0 8px rgba(255, 238, 131, 0.9));
 }
 
+.asset-character.walking {
+  animation: characterBob 360ms steps(2, end) infinite;
+}
+
 .asset-character-shadow {
   position: absolute;
   left: 10px;
@@ -1664,6 +1545,10 @@ select {
   background-position: var(--sprite-x) var(--sprite-y);
   background-size: 768px 512px;
   image-rendering: pixelated;
+}
+
+.asset-character.walking .asset-character-sprite {
+  animation: spriteStep 360ms steps(2, end) infinite;
 }
 
 .asset-character small {
@@ -1701,6 +1586,24 @@ select {
   background:
     linear-gradient(180deg, rgba(16, 30, 70, 0.24), rgba(5, 12, 30, 0.38)),
     radial-gradient(circle at 46% 42%, transparent 0 45%, rgba(3, 10, 22, 0.46) 100%);
+}
+
+@keyframes characterBob {
+  0% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: -4px;
+  }
+}
+
+@keyframes spriteStep {
+  0% {
+    background-position: var(--sprite-x) var(--sprite-y);
+  }
+  50% {
+    background-position: calc(var(--sprite-x) - 64px) var(--sprite-y);
+  }
 }
 
 .town-caption {
