@@ -90,6 +90,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
           <TileLayer name="terrain" tiles={assetMap.layers.terrain} zIndex={1} />
           <TileLayer name="bridge" tiles={assetMap.layers.bridge} zIndex={2} />
           <TileLayer name="deco" tiles={assetMap.layers.deco} zIndex={4} />
+          <TownStructures />
           {mapPlaces.map((place) => (
             <div
               className={`asset-place asset-place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
@@ -105,6 +106,38 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
           <div className="asset-map-light" />
         </div>
       </div>
+    </div>
+  );
+}
+
+const townStructures = [
+  { key: 'bakery', x: 22, y: 58, cropX: 720, cropY: 128, cropW: 192, cropH: 128, label: 'Bakery' },
+  { key: 'archive', x: 19, y: 79, cropX: 736, cropY: 560, cropW: 160, cropH: 160, label: 'Archive' },
+  { key: 'market', x: 60, y: 57, cropX: 752, cropY: 464, cropW: 160, cropH: 96, label: 'Market' },
+  { key: 'workshop', x: 68, y: 32, cropX: 1168, cropY: 464, cropW: 144, cropH: 144, label: 'Workshop' },
+  { key: 'station', x: 32, y: 80, cropX: 480, cropY: 128, cropW: 80, cropH: 96, label: 'Bell station' },
+] as const;
+
+function TownStructures(): ReactElement {
+  return (
+    <div className="town-structure-layer" aria-hidden="true">
+      {townStructures.map((structure) => (
+        <span
+          className={`town-structure town-structure-${structure.key}`}
+          style={
+            {
+              '--x': `${structure.x}%`,
+              '--y': `${structure.y}%`,
+              '--crop-x': `-${structure.cropX * 3}px`,
+              '--crop-y': `-${structure.cropY * 3}px`,
+              '--crop-width': `${structure.cropW * 3}px`,
+              '--crop-height': `${structure.cropH * 3}px`,
+            } as CSSProperties
+          }
+          title={structure.label}
+          key={structure.key}
+        />
+      ))}
     </div>
   );
 }

@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.5';
+export const currentVersion = 'v0.9.0';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.9.0',
+    date: '2026-06-21',
+    title: {
+      en: 'Purpose-built town structures',
+      zh: '专门的小镇建筑层',
+    },
+    changes: {
+      en: [
+        'Added a dedicated town structure layer with bakery, archive, market, workshop, and station landmarks rendered from the same RPG tileset as the map.',
+        'Moved place labels and resident gathering points to doorways or readable areas near those structures instead of floating over trees.',
+        'Kept bridge, garden, and square anchors tied to existing map features so all locations now respect the map scale.',
+      ],
+      zh: [
+        '加入专门的小镇结构层，用和地图同源的 RPG tileset 渲染面包店、档案馆、集市、工坊和钟铃站。',
+        '将地点标签和角色聚集点移动到建筑门口或清晰区域，不再漂浮在树冠上。',
+        '桥、花园、广场继续锚定到地图已有结构，让所有地点都符合地图比例。',
+      ],
+    },
+  },
   {
     version: 'v0.8.5',
     date: '2026-06-21',

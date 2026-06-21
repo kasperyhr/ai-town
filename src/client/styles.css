@@ -1444,6 +1444,40 @@ select {
   filter: drop-shadow(0 3px 0 rgba(13, 24, 16, 0.28));
 }
 
+.town-structure-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.town-structure {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--crop-width);
+  height: var(--crop-height);
+  background-image: url('/assets/ai-town/rpg-tileset.png');
+  background-position: var(--crop-x) var(--crop-y);
+  background-repeat: no-repeat;
+  background-size: 4800px 4800px;
+  filter: drop-shadow(0 10px 0 rgba(14, 24, 17, 0.22));
+  image-rendering: pixelated;
+  transform: translate(-50%, -76%);
+}
+
+.town-structure-market {
+  transform: translate(-50%, -58%);
+}
+
+.town-structure-workshop {
+  transform: translate(-50%, -65%);
+}
+
+.town-structure-station {
+  transform: translate(-50%, -70%);
+}
+
 .asset-place {
   position: absolute;
   left: var(--x);
@@ -1467,14 +1501,14 @@ select {
 
 .asset-place-building {
   display: block;
-  width: 240px;
-  height: 192px;
-  margin-bottom: -18px;
-  background-image: url('/assets/ai-town/rpg-tileset.png');
-  background-repeat: no-repeat;
-  background-size: 4800px 4800px;
+  width: 22px;
+  height: 14px;
+  margin-bottom: 4px;
+  background:
+    linear-gradient(#fff3a6, #fff3a6) 8px 0 / 6px 6px no-repeat,
+    linear-gradient(#263525, #263525) 5px 6px / 12px 4px no-repeat,
+    linear-gradient(rgba(23, 32, 27, 0.22), rgba(23, 32, 27, 0.22)) 0 10px / 22px 4px no-repeat;
   image-rendering: pixelated;
-  filter: drop-shadow(0 9px 0 rgba(14, 24, 17, 0.2));
 }
 
 .asset-place strong {
@@ -1497,44 +1531,35 @@ select {
 }
 
 .asset-place-square .asset-place-building {
-  display: none;
+  display: block;
 }
 
 .asset-place-archive .asset-place-building {
-  width: 192px;
-  height: 144px;
-  background-position: -816px -2496px;
+  display: block;
 }
 
 .asset-place-workshop .asset-place-building {
-  display: none;
+  display: block;
 }
 
 .asset-place-garden .asset-place-building {
-  display: none;
+  display: block;
 }
 
 .asset-place-bridge .asset-place-building {
-  display: none;
+  display: block;
 }
 
 .asset-place-bakery .asset-place-building {
-  width: 288px;
-  height: 240px;
-  margin-bottom: -24px;
-  background-position: -2160px 0;
+  display: block;
 }
 
 .asset-place-market .asset-place-building {
-  width: 240px;
-  height: 144px;
-  background-position: -2352px -1488px;
+  display: block;
 }
 
 .asset-place-station .asset-place-building {
-  width: 144px;
-  height: 144px;
-  background-position: -816px -2496px;
+  display: block;
 }
 
 .asset-place.active .asset-place-pin {

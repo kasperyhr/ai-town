@@ -1,14 +1,14 @@
 import type { Language, MapPlace, StoryBeat } from './types';
 
 export const mapPlaces: MapPlace[] = [
-  { key: 'square', label: 'Town Square', labelZh: '小镇广场', x: 77, y: 55, aliases: ['square', 'plaza', 'center', 'fountain', '广场', '喷泉'] },
-  { key: 'archive', label: 'Town Archive', labelZh: '小镇档案馆', x: 25, y: 83, aliases: ['archive', 'library', 'records', '档案', '图书馆'] },
-  { key: 'workshop', label: 'Workshop', labelZh: '修理工坊', x: 70, y: 37, aliases: ['workshop', 'repair', 'machine', 'clock', '工坊', '机器', '钟表'] },
+  { key: 'square', label: 'Town Square', labelZh: '小镇广场', x: 77, y: 62, aliases: ['square', 'plaza', 'center', 'fountain', '广场', '喷泉'] },
+  { key: 'archive', label: 'Town Archive', labelZh: '小镇档案馆', x: 19, y: 86, aliases: ['archive', 'library', 'records', '档案', '图书馆'] },
+  { key: 'workshop', label: 'Workshop', labelZh: '修理工坊', x: 68, y: 39, aliases: ['workshop', 'repair', 'machine', 'clock', '工坊', '机器', '钟表'] },
   { key: 'garden', label: 'Garden', labelZh: '中央花园', x: 15, y: 32, aliases: ['garden', 'greenhouse', 'flowers', 'herb', '花园', '温室'] },
   { key: 'bridge', label: 'Bridge', labelZh: '河桥', x: 43, y: 24, aliases: ['bridge', 'river', 'canal', '桥', '河', '运河'] },
-  { key: 'bakery', label: 'Bakery', labelZh: '面包店', x: 18, y: 47, aliases: ['bakery', 'bread', 'kitchen', '面包', '厨房'] },
-  { key: 'market', label: 'Market', labelZh: '集市', x: 62, y: 56, aliases: ['market', 'shop', 'stall', '集市', '商店', '摊位'] },
-  { key: 'station', label: 'Bell Station', labelZh: '钟铃站', x: 21, y: 88, aliases: ['station', 'bell', 'clocktower', 'tower', '钟铃', '钟塔', '塔'] },
+  { key: 'bakery', label: 'Bakery', labelZh: '面包店', x: 22, y: 63, aliases: ['bakery', 'bread', 'kitchen', '面包', '厨房'] },
+  { key: 'market', label: 'Market', labelZh: '集市', x: 60, y: 60, aliases: ['market', 'shop', 'stall', '集市', '商店', '摊位'] },
+  { key: 'station', label: 'Bell Station', labelZh: '钟铃站', x: 32, y: 83, aliases: ['station', 'bell', 'clocktower', 'tower', '钟铃', '钟塔', '塔'] },
 ];
 
 export function placeLabel(place: MapPlace, language: Language): string {
