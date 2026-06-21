@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactElement } from 'react';
+﻿import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactElement } from 'react';
 import * as api from './api';
 import { PencilIcon } from './icons';
 import { makeTranslator, type Translator } from './i18n';
@@ -236,7 +236,11 @@ export function App(): ReactElement {
                     ) : (
                       <h2>{t('town')}</h2>
                     )}
-                    <p>{selectedWorld ? `${t('characters')}: ${content.characters.length} · ${t('memories')}: ${selectedWorld.memoryCount}` : ''}</p>
+                    <p>
+                      {selectedWorld
+                        ? `${t('characters')}: ${content.characters.length} · ${t('memories')}: ${selectedWorld.memoryCount}`
+                        : ''}
+                    </p>
                   </div>
                   <BeatControls
                     count={selectedStory?.beats.length ?? 0}

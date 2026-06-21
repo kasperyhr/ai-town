@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement } from 'react';
+import { useRef, useState, type CSSProperties, type PointerEvent, type ReactElement } from 'react';
 import type { Translator } from '../i18n';
 import { activeCharacterNames, characterPosition, getBeatPlace, isCharacterActive, mapPlaces, normalizeName, placeLabel } from '../mapData';
 import type { CharacterRecord, Language, StoryBeat, WorldSummary } from '../types';
@@ -30,34 +30,66 @@ const townDecor = [
 export function TownMap({ language, world, characters, beat }: Props): ReactElement {
   const activePlace = getBeatPlace(beat);
   const period = (beat?.timeSlot ?? 'day').toLowerCase().replace(/\s+/g, '-');
+  const [pan, setPan] = useState({ x: -14, y: -12 });
+  const dragRef = useRef<{ id: number; startX: number; startY: number; panX: number; panY: number } | null>(null);
+
+  const beginDrag = (event: PointerEvent<HTMLDivElement>): void => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragRef.current = { id: event.pointerId, startX: event.clientX, startY: event.clientY, panX: pan.x, panY: pan.y };
+  };
+
+  const dragMap = (event: PointerEvent<HTMLDivElement>): void => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== event.pointerId) return;
+    setPan({
+      x: clampPan(drag.panX + event.clientX - drag.startX),
+      y: clampPan(drag.panY + event.clientY - drag.startY),
+    });
+  };
+
+  const endDrag = (event: PointerEvent<HTMLDivElement>): void => {
+    if (dragRef.current?.id === event.pointerId) dragRef.current = null;
+  };
 
   return (
-    <div className="town-scene ai-town-scene" data-period={period}>
-      <div className="tile-layer grass-layer" />
-      <div className="map-water river-band" />
-      <div className="map-road main-road" />
-      <div className="map-road cross-road" />
-      <div className="map-road market-road" />
-      <div className="plaza town-square-tile" />
-      {townDecor.map((item, index) => (
-        <span
-          className={`town-decor decor-${item.type}`}
-          style={{ '--x': `${item.x}%`, '--y': `${item.y}%` } as CSSProperties}
-          key={`${item.type}-${index}`}
-        />
-      ))}
-      {mapPlaces.map((place) => (
-        <div
-          className={`map-place place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
-          style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
-          key={place.key}
-        >
-          <span className="place-building" />
-          <strong>{placeLabel(place, language)}</strong>
+    <div
+      className="town-viewport"
+      onPointerDown={beginDrag}
+      onPointerMove={dragMap}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      role="application"
+      aria-label="Draggable town map"
+    >
+      <div className="town-drag-layer" style={{ '--pan-x': `${pan.x}px`, '--pan-y': `${pan.y}px` } as CSSProperties}>
+        <div className="town-scene ai-town-scene" data-period={period}>
+          <div className="tile-layer grass-layer" />
+          <div className="map-water river-band" />
+          <div className="map-road main-road" />
+          <div className="map-road cross-road" />
+          <div className="map-road market-road" />
+          <div className="plaza town-square-tile" />
+          {townDecor.map((item, index) => (
+            <span
+              className={`town-decor decor-${item.type}`}
+              style={{ '--x': `${item.x}%`, '--y': `${item.y}%` } as CSSProperties}
+              key={`${item.type}-${index}`}
+            />
+          ))}
+          {mapPlaces.map((place) => (
+            <div
+              className={`map-place place-${place.key} ${place.key === activePlace.key ? 'active' : ''}`}
+              style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
+              key={place.key}
+            >
+              <span className="place-building" />
+              <strong>{placeLabel(place, language)}</strong>
+            </div>
+          ))}
+          <TownCharacters world={world} characters={characters} beat={beat} activePlace={activePlace} />
+          <div className="map-light" />
         </div>
-      ))}
-      <TownCharacters world={world} characters={characters} beat={beat} activePlace={activePlace} />
-      <div className="map-light" />
+      </div>
     </div>
   );
 }
@@ -142,4 +174,8 @@ function TownCharacters({
       })}
     </>
   );
+}
+
+function clampPan(value: number): number {
+  return Math.min(0, Math.max(-220, value));
 }

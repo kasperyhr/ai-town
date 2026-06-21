@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.7.1';
+export const currentVersion = 'v0.7.2';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.7.2',
+    date: '2026-06-20',
+    title: {
+      en: 'Overlay sidebar and draggable map viewport',
+      zh: '浮层侧栏与可拖动地图视口',
+    },
+    changes: {
+      en: [
+        'Changed the story sidebar into an overlay layer so opening or closing it no longer stretches the town map.',
+        'Added a fixed 16:9 town viewport so the map scales proportionally with the browser window.',
+        'Added pointer dragging for the map layer so users can pan around the town without changing the page layout.',
+      ],
+      zh: [
+        '将故事侧栏改成浮层，打开或关闭侧栏时不再拉伸小镇地图。',
+        '加入固定 16:9 的小镇视口，浏览器窗口变化时地图按比例缩放。',
+        '加入地图拖动能力，用户可以拖动查看小镇，而不会改变页面整体布局。',
+      ],
+    },
+  },
   {
     version: 'v0.7.1',
     date: '2026-06-20',
