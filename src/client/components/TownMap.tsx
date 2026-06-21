@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type PointerEvent, type ReactElement } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactElement } from 'react';
 import { assetMap } from '../assetMap';
 import type { Translator } from '../i18n';
 import { activeCharacterNames, characterPosition, getBeatPlace, isCharacterActive, mapPlaces, normalizeName, placeLabel } from '../mapData';
@@ -19,8 +19,25 @@ const mapPixelHeight = assetMap.height * renderedTileSize;
 export function TownMap({ language, world, characters, beat }: Props): ReactElement {
   const activePlace = getBeatPlace(beat);
   const period = (beat?.timeSlot ?? 'day').toLowerCase().replace(/\s+/g, '-');
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
   const [pan, setPan] = useState({ x: -180, y: -120 });
   const dragRef = useRef<{ id: number; startX: number; startY: number; panX: number; panY: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const updateSize = (): void => setViewportSize({ width: viewport.clientWidth, height: viewport.clientHeight });
+    updateSize();
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
+  const clampViewportPan = (nextPan: { x: number; y: number }): { x: number; y: number } => ({
+    x: clampAxis(nextPan.x, viewportSize.width, mapPixelWidth),
+    y: clampAxis(nextPan.y, viewportSize.height, mapPixelHeight),
+  });
 
   const beginDrag = (event: PointerEvent<HTMLDivElement>): void => {
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -30,10 +47,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
   const dragMap = (event: PointerEvent<HTMLDivElement>): void => {
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
-    setPan({
-      x: clampPan(drag.panX + event.clientX - drag.startX),
-      y: clampPan(drag.panY + event.clientY - drag.startY),
-    });
+    setPan(clampViewportPan({ x: drag.panX + event.clientX - drag.startX, y: drag.panY + event.clientY - drag.startY }));
   };
 
   const endDrag = (event: PointerEvent<HTMLDivElement>): void => {
@@ -43,6 +57,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
   return (
     <div
       className="town-viewport asset-town-viewport"
+      ref={viewportRef}
       onPointerDown={beginDrag}
       onPointerMove={dragMap}
       onPointerUp={endDrag}
@@ -71,7 +86,7 @@ export function TownMap({ language, world, characters, beat }: Props): ReactElem
               style={{ '--x': `${place.x}%`, '--y': `${place.y}%` } as CSSProperties}
               key={place.key}
             >
-              <span className="asset-place-building" />
+              <span className="asset-place-marker" />
               <strong>{placeLabel(place, language)}</strong>
             </div>
           ))}
@@ -221,6 +236,7 @@ function spritePosition(character: CharacterRecord, active: boolean): { x: numbe
   };
 }
 
-function clampPan(value: number): number {
-  return Math.min(24, Math.max(-960, value));
+function clampAxis(value: number, viewportLength: number, mapLength: number): number {
+  if (viewportLength <= 0 || mapLength <= viewportLength) return Math.max(0, (viewportLength - mapLength) / 2);
+  return Math.min(0, Math.max(viewportLength - mapLength, value));
 }

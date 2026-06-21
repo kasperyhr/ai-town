@@ -4,7 +4,7 @@ A lightweight AI town inspired by AI Town. The project is designed for Cloudflar
 
 ## Current Version
 
-Current version: `v0.8.1`, released on `2026-06-20`.
+Current version: `v0.8.2`, released on `2026-06-20`.
 
 The current version includes:
 
@@ -13,6 +13,7 @@ The current version includes:
 - Overlay story sidebar that does not resize or stretch the map.
 - Asset-based AI Town-inspired top-down RPG tilemap using local tileset and spritesheet files.
 - Tiled flip support, object-sheet place buildings, varied resident sprites, and smoother map movement.
+- Viewport-aware drag bounds and map-scale pixel landmarks.
 - Fixed-ratio draggable town map viewport.
 - Cloudflare Worker API skeleton.
 - D1 schema for users, sessions, worlds, characters, memories, lexicon entries, and stories.
@@ -31,7 +32,7 @@ The current version includes:
 - Per-story Cron eligibility, with Cron disabled by default in `wrangler.jsonc`.
 - Local and Cloudflare deployment documentation draft.
 
-Next planned version: `v0.8.2`, focused on richer sprite animation frames and map composition presets.
+Next planned version: `v0.8.3`, focused on richer sprite animation frames and map composition presets.
 
 ## Scripts
 

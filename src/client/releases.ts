@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.1';
+export const currentVersion = 'v0.8.2';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.2',
+    date: '2026-06-20',
+    title: {
+      en: 'Map boundary and landmark polish',
+      zh: '地图边界与地标优化',
+    },
+    changes: {
+      en: [
+        'Replaced fixed drag limits with viewport-aware map bounds so users cannot drag into empty black gutters.',
+        'Removed mismatched object-sheet crop landmarks and replaced them with smaller pixel landmarks that match the map scale.',
+        'Kept the larger asset map while making place markers visually lighter and less pasted-on.',
+      ],
+      zh: [
+        '将固定拖动边界改为根据视口动态计算，避免拖到地图外露出黑边。',
+        '移除不匹配的大块物件图集裁切，替换为更贴合地图尺度的小像素地标。',
+        '保留更大的素材地图，同时让地点标记更轻、更不像直接贴上去的图片。',
+      ],
+    },
+  },
   {
     version: 'v0.8.1',
     date: '2026-06-20',
