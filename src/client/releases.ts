@@ -7,9 +7,29 @@ export type ReleaseNote = {
   changes: Record<Language, string[]>;
 };
 
-export const currentVersion = 'v0.8.4';
+export const currentVersion = 'v0.8.5';
 
 export const releaseNotes: ReleaseNote[] = [
+  {
+    version: 'v0.8.5',
+    date: '2026-06-21',
+    title: {
+      en: 'Map-scale landmark anchors',
+      zh: '地图比例地标锚点',
+    },
+    changes: {
+      en: [
+        'Moved story place anchors onto real structures and clear map areas so labels no longer sit on trees or mismatched props.',
+        'Removed the object-sheet landmark crops that made the bakery and archive look like unrelated pasted items.',
+        'Kept remaining landmark art on the same RPG tileset as the map and documented the next step as a purpose-built town tilemap.',
+      ],
+      zh: [
+        '将故事地点锚点移动到真实地图结构和空地区域，避免标签或建筑压在树上。',
+        '移除不匹配的物件图集裁切，避免面包店、档案馆看起来像无关贴图。',
+        '保留的地标素材改用和地图同源的 RPG tileset，并将下一步明确为制作真正的小镇建筑地图。',
+      ],
+    },
+  },
   {
     version: 'v0.8.4',
     date: '2026-06-21',

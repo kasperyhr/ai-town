@@ -1,14 +1,14 @@
 import type { Language, MapPlace, StoryBeat } from './types';
 
 export const mapPlaces: MapPlace[] = [
-  { key: 'square', label: 'Town Square', labelZh: '小镇广场', x: 50, y: 52, aliases: ['square', 'plaza', 'center', 'fountain', '广场', '喷泉'] },
-  { key: 'archive', label: 'Town Archive', labelZh: '小镇档案馆', x: 22, y: 30, aliases: ['archive', 'library', 'records', '档案', '图书馆'] },
-  { key: 'workshop', label: 'Workshop', labelZh: '修理工坊', x: 78, y: 31, aliases: ['workshop', 'repair', 'machine', 'clock', '工坊', '机器', '钟表'] },
-  { key: 'garden', label: 'Garden', labelZh: '中央花园', x: 27, y: 73, aliases: ['garden', 'greenhouse', 'flowers', 'herb', '花园', '温室'] },
-  { key: 'bridge', label: 'Bridge', labelZh: '河桥', x: 70, y: 76, aliases: ['bridge', 'river', 'canal', '桥', '河', '运河'] },
-  { key: 'bakery', label: 'Bakery', labelZh: '面包店', x: 44, y: 24, aliases: ['bakery', 'bread', 'kitchen', '面包', '厨房'] },
-  { key: 'market', label: 'Market', labelZh: '集市', x: 60, y: 37, aliases: ['market', 'shop', 'stall', '集市', '商店', '摊位'] },
-  { key: 'station', label: 'Bell Station', labelZh: '钟铃站', x: 38, y: 61, aliases: ['station', 'bell', 'clocktower', 'tower', '钟铃', '钟塔', '塔'] },
+  { key: 'square', label: 'Town Square', labelZh: '小镇广场', x: 77, y: 55, aliases: ['square', 'plaza', 'center', 'fountain', '广场', '喷泉'] },
+  { key: 'archive', label: 'Town Archive', labelZh: '小镇档案馆', x: 25, y: 83, aliases: ['archive', 'library', 'records', '档案', '图书馆'] },
+  { key: 'workshop', label: 'Workshop', labelZh: '修理工坊', x: 70, y: 37, aliases: ['workshop', 'repair', 'machine', 'clock', '工坊', '机器', '钟表'] },
+  { key: 'garden', label: 'Garden', labelZh: '中央花园', x: 15, y: 32, aliases: ['garden', 'greenhouse', 'flowers', 'herb', '花园', '温室'] },
+  { key: 'bridge', label: 'Bridge', labelZh: '河桥', x: 43, y: 24, aliases: ['bridge', 'river', 'canal', '桥', '河', '运河'] },
+  { key: 'bakery', label: 'Bakery', labelZh: '面包店', x: 18, y: 47, aliases: ['bakery', 'bread', 'kitchen', '面包', '厨房'] },
+  { key: 'market', label: 'Market', labelZh: '集市', x: 62, y: 56, aliases: ['market', 'shop', 'stall', '集市', '商店', '摊位'] },
+  { key: 'station', label: 'Bell Station', labelZh: '钟铃站', x: 21, y: 88, aliases: ['station', 'bell', 'clocktower', 'tower', '钟铃', '钟塔', '塔'] },
 ];
 
 export function placeLabel(place: MapPlace, language: Language): string {
@@ -55,14 +55,14 @@ export function characterPosition(
 ): { x: number; y: number } {
   if (active) {
     const offsets = [
-      { x: -4, y: -6 },
+      { x: -4, y: 5 },
       { x: 5, y: 6 },
-      { x: 7, y: -5 },
-      { x: -7, y: 5 },
-      { x: 0, y: 9 },
-      { x: 9, y: 0 },
-      { x: -9, y: 0 },
-      { x: -5, y: -8 },
+      { x: 7, y: -4 },
+      { x: -7, y: 7 },
+      { x: 0, y: 10 },
+      { x: 8, y: 1 },
+      { x: -8, y: 1 },
+      { x: -5, y: -6 },
     ];
     const offset = offsets[index % offsets.length]!;
     return {
@@ -74,8 +74,8 @@ export function characterPosition(
   const nightShift = /night/i.test(timeSlot) ? 5 : 0;
   const angle = (Math.PI * 2 * index) / Math.max(count, 1);
   return {
-    x: clampNumber(50 + Math.cos(angle) * 31, 9, 91),
-    y: clampNumber(52 + Math.sin(angle) * (22 + nightShift), 13, 87),
+    x: clampNumber(52 + Math.cos(angle) * 29, 9, 91),
+    y: clampNumber(56 + Math.sin(angle) * (22 + nightShift), 13, 87),
   };
 }
 

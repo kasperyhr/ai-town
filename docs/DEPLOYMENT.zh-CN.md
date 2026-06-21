@@ -2,7 +2,7 @@
 
 这份文档面向不熟悉代码的工程师，说明如何在 Windows、macOS 本地运行，以及如何部署到 Cloudflare。你说过会等应用准备好后再部署，所以本文会持续更新，最后会成为可直接照着操作的版本。
 
-当前代码对应版本 `v0.8.4`：已包含 Cloudflare Worker、D1、GitHub/Google OAuth、用户隔离、多故事存档、加密 `.aitown` 导入导出、角色和词库编辑、DeepSeek 生成下一天、故事历史、一天 7 个 scene beat 的时间线、React 前端架构、浮层故事侧栏，以及使用本地 tileset 和 spritesheet 文件渲染的 AI Town 风格像素地图。0.8.4 将角色移动改成更慢的横向/竖向 RPG 分段行走，并用真实像素素材裁切恢复地点地标。自动生成新角色会在后续版本补上。
+当前代码对应版本 `v0.8.5`：已包含 Cloudflare Worker、D1、GitHub/Google OAuth、用户隔离、多故事存档、加密 `.aitown` 导入导出、角色和词库编辑、DeepSeek 生成下一天、故事历史、一天 7 个 scene beat 的时间线、React 前端架构、浮层故事侧栏，以及使用本地 tileset 和 spritesheet 文件渲染的 AI Town 风格像素地图。0.8.5 移除了不匹配的物件图集地标裁切，将地点锚点移动到地图真实结构上，并保证保留的地点素材来自和地图同源的 RPG tileset。自动生成新角色会在后续版本补上。
 
 ## 1. 本地部署和 Cloudflare 部署的区别
 
